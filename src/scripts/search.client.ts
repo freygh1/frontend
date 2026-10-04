@@ -1,7 +1,4 @@
 import { normalize } from "../utils/normalize";
-
-console.log("🔵 search.client.ts cargado");
-
 type Filters = {
   query: string;
   course: string;
@@ -87,7 +84,6 @@ function setupFilter(id: string, key: "course" | "category" | "level"): void {
 }
 
 function init(): void {
-  console.log("🔵 search.client.ts cargado");
   const input = getEl<HTMLInputElement>("search-input");
   input?.addEventListener("input", () => {
     filters.query = input.value;
