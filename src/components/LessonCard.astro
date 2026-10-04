@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { normalize } from "../utils/normalize";
+
+interface Props {
+  lesson: CollectionEntry<"lessons">;
+}
+
+const { lesson } = Astro.props;
+const { title, description, course, category, level, tags } = lesson.data;
+
+const searchText = normalize(
+  [title, description, course, category, ...tags].join(" "),
+);
+
+const levelStyles: Record<string, string> = {
+  Básico: "bg-emerald-100 text-emerald-700",
+  Intermedio: "bg-amber-100 text-amber-700",
+  Avanzado: "bg-rose-100 text-rose-700",
+};
+---
+
+<a
+  href={`/lessons/${lesson.id}`}
+  data-lesson
+  data-course={course}
+  data-category={category}
+  data-level={level}
+  data-search={searchText}
+  class="block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-amber-300 transition-all"
+>
+  <div class="flex items-start justify-between gap-2 mb-2">
+    <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">
+      {course} · {category}
+    </span>
+    <span
+      class={`text-xs font-medium px-2 py-0.5 rounded-full ${levelStyles[level]}`}
+    >
+      {level}
+    </span>
+  </div>
+
+  <h3 class="font-semibold text-lg text-slate-900 mb-1">{title}</h3>
+  <p class="text-sm text-slate-600">{description}</p>
+
+  {
+    tags.length > 0 && (
+      <div class="mt-3 flex flex-wrap gap-1">
+        {tags.map((tag: string) => (
+          <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )
+  }
+</a>

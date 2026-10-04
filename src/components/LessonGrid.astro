@@ -1,0 +1,29 @@
+---
+// src/components/LessonGrid.astro
+import { getCollection, type CollectionEntry } from 'astro:content';
+import LessonCard from './LessonCard.astro';
+
+const lessons: CollectionEntry<'lessons'>[] = await getCollection('lessons');
+---
+
+<div id="lesson-grid-wrapper">
+  <ul id="lesson-grid" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    {/* Se anota el tipo 'CollectionEntry<'lessons'>' en el parámetro 'lesson' */}
+    {lessons.map((lesson: CollectionEntry<'lessons'>) => (
+      <li>
+        <LessonCard lesson={lesson} />
+      </li>
+    ))}
+  </ul>
+
+  <div
+    id="empty-state"
+    class="hidden text-center py-20 bg-white rounded-2xl border border-slate-200"
+  >
+    <p class="text-5xl mb-3">🌵</p>
+    <p class="text-slate-600">No hay lecciones que coincidan con tu búsqueda.</p>
+    <button type="button" data-clear-all class="mt-4 text-amber-600 hover:text-amber-700 font-medium">
+      Ver todas las lecciones
+    </button>
+  </div>
+</div>

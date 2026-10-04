@@ -1,0 +1,15 @@
+---
+import { Image } from "astro:assets";
+import Logo from "../assets/logo.svg";
+---
+
+<header class="flex justify-between p-[1vw] mx-11">
+  <Image src={Logo} alt={"logo"} height={50} />
+  <nav class="text-amber-950 w-[30%]">
+    <ul class="flex justify-between">
+      <li>Home</li>
+      <li>Explora</li>
+      <li>Roadmap</li>
+    </ul>
+  </nav>
+</header>

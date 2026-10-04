@@ -1,0 +1,31 @@
+---
+import "../styles/global.css";
+
+// src/layouts/BaseLayout.astro
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "The Sun Learning",
+  description = "Aprende gratis con The Sun Learning",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-[#FAFFFE] h-screen">
+    <slot />
+
+    <script src="../scripts/search.client.ts"></script>
+  </body>
+</html>
