@@ -23,6 +23,10 @@ body {
   caret-color: transparent;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Restaura el caret y el I-beam solo donde sí se escribe */
 input,
 textarea,
@@ -61,7 +65,7 @@ body {
   color: var(--accent);
 }
 
-.here p {
+.hero p {
   font-weight: 600;
   color: var(--accent);
 }

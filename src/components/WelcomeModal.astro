@@ -1,0 +1,96 @@
+---
+// src/components/WelcomeModal.astro
+---
+
+<div
+  id="welcome-modal"
+  hidden
+  class="fixed inset-0 z-50 flex items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="welcome-modal-title"
+  aria-describedby="welcome-modal-body"
+>
+  <!-- Overlay -->
+  <div
+    id="welcome-modal-overlay"
+    class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+  ></div>
+
+  <!-- Panel -->
+  <div
+    class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 p-6 sm:p-8"
+  >
+    <div class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-100 mb-4 mx-auto">
+      <svg
+        class="w-7 h-7 text-amber-600"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+      </svg>
+    </div>
+
+    <h2
+      id="welcome-modal-title"
+      class="text-xl sm:text-2xl font-bold text-center text-slate-900 mb-3"
+    >
+      ¡Gracias por visitarnos!
+    </h2>
+
+    <p
+      id="welcome-modal-body"
+      class="text-sm sm:text-base text-slate-600 text-center leading-relaxed mb-6"
+    >
+      Recuerda que todavía esta página está en fase de pruebas. Cualquier error,
+      por favor házmelo saber de inmediato. Estoy trabajando tanto como puedo
+      para brindar lo mejor.
+    </p>
+
+    <button
+      id="welcome-modal-close"
+      type="button"
+      class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold shadow-sm hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+    >
+      Entendido
+    </button>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = "tsl_welcome_seen";
+
+  const modal = document.getElementById("welcome-modal");
+  const overlay = document.getElementById("welcome-modal-overlay");
+  const closeBtn = document.getElementById("welcome-modal-close");
+
+  if (modal && overlay && closeBtn) {
+    const alreadySeen = localStorage.getItem(STORAGE_KEY) === "1";
+
+    if (!alreadySeen) {
+      modal.hidden = false;
+      document.body.classList.add("overflow-hidden");
+    }
+
+    const close = () => {
+      modal.hidden = true;
+      document.body.classList.remove("overflow-hidden");
+      localStorage.setItem(STORAGE_KEY, "1");
+    };
+
+    closeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", close);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) {
+        close();
+      }
+    });
+  }
+</script>
