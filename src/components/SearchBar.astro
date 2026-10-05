@@ -1,16 +1,16 @@
 ---
-// src/components/SearchBar.astro
 import { getCollection, type CollectionEntry } from "astro:content";
 
 const lessons: CollectionEntry<"lessons">[] = await getCollection("lessons");
 
-const courses = [
-  ...new Set(lessons.map((l: CollectionEntry<"lessons">) => l.data.course)),
-].sort();
-const categories = [
-  ...new Set(lessons.map((l: CollectionEntry<"lessons">) => l.data.category)),
-].sort();
-const levels = ["Básico", "Intermedio", "Avanzado"];
+const courses = [...new Set(lessons.map((l) => l.data.course))].sort();
+
+const categories = [...new Set(lessons.map((l) => l.data.category))].sort();
+
+const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const levels = [...new Set(lessons.map((l) => l.data.level))].sort(
+  (a, b) => CEFR_ORDER.indexOf(a) - CEFR_ORDER.indexOf(b),
+);
 ---
 
 <section id="search" class="scroll-mt-4">
@@ -31,25 +31,20 @@ const levels = ["Básico", "Intermedio", "Avanzado"];
         type="button"
         aria-label="Limpiar búsqueda"
         class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+        >✕</button
       >
-        ✕
-      </button>
     </div>
 
     <div class="mt-4 flex flex-wrap gap-2">
       <select id="filter-course" class="filter-chip">
         <option value="">Todos los cursos</option>
-        {
-          courses.map((course: string) => (
-            <option value={course}>{course}</option>
-          ))
-        }
+        {courses.map((course) => <option value={course}>{course}</option>)}
       </select>
 
       <select id="filter-category" class="filter-chip">
         <option value="">Todas las categorías</option>
         {
-          categories.map((category: string) => (
+          categories.map((category) => (
             <option value={category}>{category}</option>
           ))
         }
@@ -57,16 +52,15 @@ const levels = ["Básico", "Intermedio", "Avanzado"];
 
       <select id="filter-level" class="filter-chip">
         <option value="">Todos los niveles</option>
-        {levels.map((level: string) => <option value={level}>{level}</option>)}
+        {levels.map((level) => <option value={level}>{level}</option>)}
       </select>
 
       <button
         id="filter-clear"
         type="button"
         class="hidden ml-auto text-sm text-slate-500 hover:text-slate-800 underline"
+        >Limpiar todo</button
       >
-        Limpiar todo
-      </button>
     </div>
 
     <p class="mt-4 text-sm text-slate-500">
@@ -75,4 +69,3 @@ const levels = ["Básico", "Intermedio", "Avanzado"];
     </p>
   </div>
 </section>
-

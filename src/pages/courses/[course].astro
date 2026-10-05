@@ -1,0 +1,119 @@
+---
+// src/pages/courses/[course].astro
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/LandingPageLayout.astro";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons");
+  const courses = [...new Set(lessons.map((l) => l.data.course))];
+
+  return courses.map((course) => ({
+    params: { course: course.toLowerCase() },
+    props: { course },
+  }));
+}
+
+interface Props {
+  course: string;
+}
+
+const { course } = Astro.props;
+
+const allLessons = await getCollection("lessons");
+const lessons = allLessons.filter((l) => l.data.course === course);
+
+const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const LEVEL_LABELS: Record<string, string> = {
+  A1: "Beginner",
+  A2: "Elementary",
+  B1: "Intermediate",
+  B2: "Upper Intermediate",
+  C1: "Advanced",
+  C2: "Proficiency",
+};
+
+// Group by level → ordered array
+const byLevel = new Map<string, CollectionEntry<"lessons">[]>();
+for (const lesson of lessons) {
+  const { level } = lesson.data;
+  if (!byLevel.has(level)) byLevel.set(level, []);
+  byLevel.get(level)!.push(lesson);
+}
+
+// Sort lessons inside each level by levelOrder
+for (const list of byLevel.values()) {
+  list.sort((a, b) => a.data.levelOrder - b.data.levelOrder);
+}
+
+// Sort levels by CEFR order
+const levels = [...byLevel.entries()].sort(
+  ([a], [b]) => CEFR_ORDER.indexOf(a) - CEFR_ORDER.indexOf(b),
+);
+
+// Categories of the whole course
+const categories = [...new Set(lessons.map((l) => l.data.category))];
+---
+
+<Layout
+  title={`${course} — Curso`}
+  description={`Curso de ${course} en The Sun Learning`}
+>
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <a href="/" class="text-sm text-amber-600 hover:text-amber-700 font-medium">
+      ← Volver al inicio
+    </a>
+
+    <header class="mt-6 mb-10 pb-6 border-b border-slate-200">
+      <h1 class="text-4xl md:text-5xl font-bold mb-3">{course}</h1>
+      <p class="text-slate-600">
+        {lessons.length} lecciones · {categories.length} categorías ·{" "}
+        {levels.length} niveles
+      </p>
+      <p class="text-slate-500 text-sm mt-3">
+        Sigue el orden sugerido de arriba a abajo. Cada lección incluye
+        vocabulario, gramática y ejemplos.
+      </p>
+    </header>
+
+    <div class="space-y-12">
+      {
+        levels.map(([level, levelLessons]) => (
+          <section>
+            <header class="flex items-baseline gap-3 mb-4">
+              <span class="text-2xl font-bold text-slate-900">{level}</span>
+              <span class="text-sm text-slate-500">
+                {LEVEL_LABELS[level]} · {levelLessons.length} lecciones
+              </span>
+            </header>
+
+            <ol class="space-y-2">
+              {levelLessons.map((lesson, i) => (
+                <li>
+                  <a
+                    href={`/lessons/${lesson.id}`}
+                    class="group flex items-start gap-4 p-4 bg-white rounded-xl border border-slate-200 hover:border-amber-300 hover:shadow-sm transition-all"
+                  >
+                    <span class="text-sm font-mono text-slate-400 w-6 shrink-0 mt-0.5">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div class="flex-1">
+                      <h3 class="font-medium text-slate-900 group-hover:text-amber-700 transition-colors">
+                        {lesson.data.title}
+                      </h3>
+                      <p class="text-sm text-slate-500 mt-0.5">
+                        {lesson.data.description}
+                      </p>
+                      <span class="inline-block mt-2 text-xs text-slate-400 uppercase tracking-wide">
+                        {lesson.data.category}
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))
+      }
+    </div>
+  </main>
+</Layout>

@@ -14,9 +14,21 @@ const searchText = normalize(
 );
 
 const levelStyles: Record<string, string> = {
-  Básico: "bg-emerald-100 text-emerald-700",
-  Intermedio: "bg-amber-100 text-amber-700",
-  Avanzado: "bg-rose-100 text-rose-700",
+  A1: "bg-emerald-100 text-emerald-700",
+  A2: "bg-teal-100 text-teal-700",
+  B1: "bg-amber-100 text-amber-700",
+  B2: "bg-orange-100 text-orange-700",
+  C1: "bg-rose-100 text-rose-700",
+  C2: "bg-purple-100 text-purple-700",
+};
+
+const levelLabels: Record<string, string> = {
+  A1: "Beginner",
+  A2: "Elementary",
+  B1: "Intermediate",
+  B2: "Upper Intermediate",
+  C1: "Advanced",
+  C2: "Proficiency",
 };
 ---
 
@@ -36,7 +48,7 @@ const levelStyles: Record<string, string> = {
     <span
       class={`text-xs font-medium px-2 py-0.5 rounded-full ${levelStyles[level]}`}
     >
-      {level}
+      {level} · {levelLabels[level]}
     </span>
   </div>
 

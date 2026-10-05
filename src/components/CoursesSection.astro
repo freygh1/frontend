@@ -1,0 +1,81 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+
+const lessons: CollectionEntry<"lessons">[] = await getCollection("lessons");
+
+const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
+type CourseSummary = {
+  name: string;
+  total: number;
+  levels: string[];
+  categories: string[];
+};
+
+const byCourse = new Map<string, CourseSummary>();
+
+for (const lesson of lessons) {
+  const { course, level, category } = lesson.data;
+  if (!byCourse.has(course)) {
+    byCourse.set(course, {
+      name: course,
+      total: 0,
+      levels: [],
+      categories: [],
+    });
+  }
+  const entry = byCourse.get(course)!;
+  entry.total += 1;
+  if (!entry.levels.includes(level)) entry.levels.push(level);
+  if (!entry.categories.includes(category)) entry.categories.push(category);
+}
+
+const courses = [...byCourse.values()].map((c) => ({
+  ...c,
+  levels: c.levels.sort(
+    (a, b) => CEFR_ORDER.indexOf(a) - CEFR_ORDER.indexOf(b),
+  ),
+}));
+---
+
+<section id="courses" class="scroll-mt-4">
+  <h2 class="text-2xl font-bold mb-6">Cursos disponibles</h2>
+
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {
+      courses.map((course) => (
+        <a
+          href={`/courses/${course.name.toLowerCase()}`}
+          class="group block bg-white rounded-2xl border border-slate-200 p-6 hover:border-amber-300 hover:shadow-md transition-all"
+        >
+          <div class="flex items-start justify-between mb-4">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">
+              {course.total} lecciones
+            </span>
+          </div>
+
+          <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-amber-700 transition-colors">
+            {course.name}
+          </h3>
+
+          <p class="text-sm text-slate-600 mb-4">
+            {course.categories.length} categorías · {course.levels.length}{" "}
+            niveles
+          </p>
+
+          <div class="flex flex-wrap gap-1 mb-4">
+            {course.levels.map((level) => (
+              <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                {level}
+              </span>
+            ))}
+          </div>
+
+          <span class="text-sm font-medium text-amber-600 group-hover:text-amber-700">
+            Explorar curso →
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</section>

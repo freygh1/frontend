@@ -1,5 +1,6 @@
 ---
 import Hero from "../components/Hero.astro";
+import CoursesSection from "../components/CoursesSection.astro";
 import TOC from "../components/TOC.astro";
 import SearchBar from "../components/SearchBar.astro";
 import LessonGrid from "../components/LessonGrid.astro";
@@ -7,7 +8,18 @@ import LessonGrid from "../components/LessonGrid.astro";
 
 <main>
   <Hero />
-  <TOC />
-  <SearchBar />
-  <LessonGrid />
+  <CoursesSection />
+
+  <section class="mt-16">
+    <h2 class="text-2xl font-bold mb-6">Explorar por categoría</h2>
+    <TOC />
+  </section>
+
+  <section class="mt-16">
+    <h2 class="text-2xl font-bold mb-6">Buscar lecciones</h2>
+    <SearchBar />
+    <div class="mt-6">
+      <LessonGrid />
+    </div>
+  </section>
 </main>

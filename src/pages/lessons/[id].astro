@@ -1,6 +1,6 @@
 ---
-// src/pages/lessons/[id].astro
 import { getCollection, render, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/LandingPageLayout.astro";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons");
@@ -18,12 +18,20 @@ const { lesson } = Astro.props;
 
 const allLessons = await getCollection("lessons");
 
+const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
 const sorted = [...allLessons].sort((a, b) => {
-  const courseCompare = a.data.course.localeCompare(b.data.course);
-  if (courseCompare !== 0) return courseCompare;
-  const categoryCompare = a.data.category.localeCompare(b.data.category);
-  if (categoryCompare !== 0) return categoryCompare;
-  return a.data.title.localeCompare(b.data.title);
+  // 1. Course (alphabetical)
+  const courseCmp = a.data.course.localeCompare(b.data.course);
+  if (courseCmp !== 0) return courseCmp;
+
+  // 2. Level (A1 → C2)
+  const levelCmp =
+    CEFR_ORDER.indexOf(a.data.level) - CEFR_ORDER.indexOf(b.data.level);
+  if (levelCmp !== 0) return levelCmp;
+
+  // 3. levelOrder (manual position inside the level)
+  return a.data.levelOrder - b.data.levelOrder;
 });
 
 const currentIndex = sorted.findIndex((l) => l.id === lesson.id);
@@ -34,94 +42,85 @@ const { Content } = await render(lesson);
 const { title, description, course, category, level, tags } = lesson.data;
 
 const levelStyles: Record<string, string> = {
-  Básico: "bg-emerald-100 text-emerald-700",
-  Intermedio: "bg-amber-100 text-amber-700",
-  Avanzado: "bg-rose-100 text-rose-700",
+  A1: "bg-emerald-100 text-emerald-700",
+  A2: "bg-teal-100 text-teal-700",
+  B1: "bg-amber-100 text-amber-700",
+  B2: "bg-orange-100 text-orange-700",
+  C1: "bg-rose-100 text-rose-700",
+  C2: "bg-purple-100 text-purple-700",
 };
-
-import Layout from "../../layouts/LandingPageLayout.astro";
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} · The Sun Learning</title>
-    <meta name="description" content={description} />
-  </head>
-  <body class="bg-slate-50 text-slate-800">
-    <Layout>
-      <main class="max-w-3xl mx-auto px-4 py-10">
-        <a
-          href="/"
-          class="text-sm text-amber-600 hover:text-amber-700 font-medium"
+<Layout title={title} description={description}>
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <a href="/" class="text-sm text-amber-600 hover:text-amber-700 font-medium">
+      ← Volver al inicio
+    </a>
+
+    <header class="mt-6 mb-8 pb-6 border-b border-slate-200">
+      <div
+        class="flex items-center gap-2 mb-2 text-xs text-slate-500 uppercase tracking-wide"
+      >
+        <span>{course}</span>
+        <span>·</span>
+        <span>{category}</span>
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">{title}</h1>
+      <p class="text-slate-600 mb-4">{description}</p>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <span
+          class={`text-xs font-medium px-2 py-0.5 rounded-full ${levelStyles[level]}`}
         >
-          ← Volver al inicio
-        </a>
-        <header class="mt-6 mb-8 pb-6 border-b border-slate-200">
-          <div
-            class="flex items-center gap-2 mb-2 text-xs text-slate-500 uppercase tracking-wide"
-          >
-            <span>{course}</span>
-            <span>·</span>
-            <span>{category}</span>
-          </div>
-          <h1 class="text-3xl md:text-4xl font-bold mb-2">{title}</h1>
-          <p class="text-slate-600 mb-4">{description}</p>
-          <div class="flex flex-wrap items-center gap-2">
-            <span
-              class={`text-xs font-medium px-2 py-0.5 rounded-full ${levelStyles[level]}`}
-            >
-              {level}
+          {level}
+        </span>
+        {
+          tags.map((tag: string) => (
+            <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
+              #{tag}
             </span>
-            {
-              tags.map((tag: string) => (
-                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
-                  #{tag}
-                </span>
-              ))
-            }
-          </div>
-        </header>
-        <!-- 👇 Aquí está todo el cambio: clase prose de Tailwind -->
-        <article class="prose prose-slate max-w-none">
-          <Content />
-        </article>
-        <nav
-          class="mt-12 pt-6 border-t border-slate-200 grid gap-4 sm:grid-cols-2"
-        >
-          {
-            prev ? (
-              <a
-                href={`/lessons/${prev.id}`}
-                class="group bg-white rounded-xl border border-slate-200 p-4 hover:border-amber-300 transition-colors"
-              >
-                <span class="text-xs text-slate-500">← Anterior</span>
-                <p class="font-medium text-slate-800 group-hover:text-amber-700">
-                  {prev.data.title}
-                </p>
-              </a>
-            ) : (
-              <div />
-            )
-          }
-          {
-            next ? (
-              <a
-                href={`/lessons/${next.id}`}
-                class="group bg-white rounded-xl border border-slate-200 p-4 hover:border-amber-300 transition-colors text-right"
-              >
-                <span class="text-xs text-slate-500">Siguiente →</span>
-                <p class="font-medium text-slate-800 group-hover:text-amber-700">
-                  {next.data.title}
-                </p>
-              </a>
-            ) : (
-              <div />
-            )
-          }
-        </nav>
-      </main>
-    </Layout>
-  </body>
-</html>
+          ))
+        }
+      </div>
+    </header>
+
+    <article class="prose prose-slate max-w-none">
+      <Content />
+    </article>
+
+    <nav class="mt-12 pt-6 border-t border-slate-200 grid gap-4 sm:grid-cols-2">
+      {
+        prev ? (
+          <a
+            href={`/lessons/${prev.id}`}
+            class="group bg-white rounded-xl border border-slate-200 p-4 hover:border-amber-300 transition-colors"
+          >
+            <span class="text-xs text-slate-500">← Anterior</span>
+            <p class="font-medium text-slate-800 group-hover:text-amber-700">
+              {prev.data.title}
+            </p>
+          </a>
+        ) : (
+          <div />
+        )
+      }
+
+      {
+        next ? (
+          <a
+            href={`/lessons/${next.id}`}
+            class="group bg-white rounded-xl border border-slate-200 p-4 hover:border-amber-300 transition-colors text-right"
+          >
+            <span class="text-xs text-slate-500">Siguiente →</span>
+            <p class="font-medium text-slate-800 group-hover:text-amber-700">
+              {next.data.title}
+            </p>
+          </a>
+        ) : (
+          <div />
+        )
+      }
+    </nav>
+  </main>
+</Layout>

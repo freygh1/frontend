@@ -1,24 +1,34 @@
 ---
 title: "Past Simple"
-description: "El tiempo verbal base para hábitos y rutinas pasadas"
+description: "Habla de acciones terminadas en el pasado."
 category: "Gramática"
-level: "Básico"
+categoryOrder: 20
+level: "A1"
+levelOrder: 20
 tags: ["verbos", "pasado"]
 ---
 
-## Present Simple
+## Vocabulary
 
-El *Present Simple* se usa para hablar de hábitos, rutinas y verdades generales.
+- **Yesterday** — ayer
+- **Last night** — anoche
+- **Ago** — hace
+- **Then** — entonces
+- **Before** — antes
 
-## Estructura
+## Grammar
 
-- **Afirmativa:** Sujeto + verbo (+s/es en 3ª persona)
-- **Negativa:** Sujeto + do/does + not + verbo
-- **Interrogativa:** Do/Does + sujeto + verbo?
+El _Past Simple_ se usa para acciones terminadas en un momento concreto del pasado.
 
-## Ejemplos
+**Estructura:**
 
-- I **work** every day.
-- She **works** in a hospital.
-- They **don't** like coffee.
-- **Do** you speak English?
+- **Afirmativa:** Sujeto + verbo en pasado
+- **Negativa:** Sujeto + did + not + verbo en infinitivo
+- **Interrogativa:** Did + sujeto + verbo en infinitivo?
+
+## Examples
+
+- I **worked** yesterday.
+- She **went** to Paris last year.
+- They **didn't** come to the party.
+- **Did** you see the movie?
