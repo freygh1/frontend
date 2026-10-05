@@ -5,6 +5,7 @@ category: "Gramática"
 categoryOrder: 30
 level: "A1"
 levelOrder: 30
+course: "Inglés"
 tags: ["verbos", "futuro"]
 ---
 

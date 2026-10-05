@@ -5,6 +5,7 @@ category: "Gramática"
 categoryOrder: 20
 level: "A1"
 levelOrder: 20
+course: "Inglés"
 tags: ["verbos", "pasado"]
 ---
 

@@ -18,8 +18,17 @@
   --radius: 28px;
 }
 
-html {
-  user-select: none;
+html,
+body {
+  caret-color: transparent;
+}
+
+/* Restaura el caret y el I-beam solo donde sí se escribe */
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+  caret-color: auto;
 }
 
 .filter-chip {

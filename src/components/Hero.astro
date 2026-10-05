@@ -1,13 +1,14 @@
 ---
-
+import { getCollection } from "astro:content";
+const total = (await getCollection("lessons")).length;
 ---
 
 <section class="hero my-[10vw]" aria-labelledby="hero-title">
   <div class="flex flex-col items-center text-center w-full">
-    <h1>Aprende<br />Inglés</h1>
+    <h1 aria-labelledby="hero-title">Aprende<br />Inglés</h1>
     <h2 class="mb-3"><span>GRATIS!</span></h2>
     <!-- Luego voy a cambiar por "Aprende Idiomas o referencia a contenido general" -->
-    <p class="description">Accede a X lecciones</p>
+    <p class="description">Con un total de {total} lecciones</p>
     <p class="description">El límite lo pones tú.</p>
     <button>
       <a class="" href="#courses">Explora el contenido<span>→</span></a>

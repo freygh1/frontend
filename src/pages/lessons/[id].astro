@@ -20,17 +20,15 @@ const allLessons = await getCollection("lessons");
 
 const CEFR_ORDER = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
-const sorted = [...allLessons].sort((a, b) => {
-  // 1. Course (alphabetical)
-  const courseCmp = a.data.course.localeCompare(b.data.course);
-  if (courseCmp !== 0) return courseCmp;
+// Solo lecciones del mismo curso
+const courseLessons = allLessons.filter(
+  (l) => l.data.course === lesson.data.course,
+);
 
-  // 2. Level (A1 → C2)
+const sorted = [...courseLessons].sort((a, b) => {
   const levelCmp =
     CEFR_ORDER.indexOf(a.data.level) - CEFR_ORDER.indexOf(b.data.level);
   if (levelCmp !== 0) return levelCmp;
-
-  // 3. levelOrder (manual position inside the level)
   return a.data.levelOrder - b.data.levelOrder;
 });
 
@@ -61,7 +59,12 @@ const levelStyles: Record<string, string> = {
       <div
         class="flex items-center gap-2 mb-2 text-xs text-slate-500 uppercase tracking-wide"
       >
-        <span>{course}</span>
+        <a
+          href={`/courses/${course.toLowerCase()}`}
+          class="hover:text-amber-600 transition-colors"
+        >
+          {course}
+        </a>
         <span>·</span>
         <span>{category}</span>
       </div>

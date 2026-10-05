@@ -3,13 +3,21 @@ import { Image } from "astro:assets";
 import Logo from "../assets/logo.svg";
 ---
 
-<header class="flex justify-between p-[1vw] mx-11">
+<header class="flex justify-between p-[1vw] lg:mx-50 md:mx-25 sm:mx-5">
   <Image src={Logo} alt={"logo"} height={50} />
   <nav class="text-amber-950 w-[30%]">
-    <ul class="flex justify-between">
-      <li>Home</li>
-      <li>Explora</li>
-      <li>Roadmap</li>
+    <ul class="flex justify-between gap-6">
+      <li>
+        <a href="/" class="hover:text-amber-700 transition-colors">Home</a>
+      </li>
+      <li>
+        <a href="/#courses" class="hover:text-amber-700 transition-colors"
+          >Explora</a
+        >
+      </li>
+      <li>
+        <!-- <a href="#" class="hover:text-amber-700 transition-colors">Roadmap</a> -->
+      </li>
     </ul>
   </nav>
 </header>
