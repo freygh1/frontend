@@ -3,21 +3,125 @@ import { Image } from "astro:assets";
 import Logo from "../assets/logo.svg";
 ---
 
-<header class="flex justify-between p-[1vw] lg:mx-50 md:mx-25 sm:mx-5">
-  <Image src={Logo} alt={"logo"} height={50} />
-  <nav class="text-amber-950 w-[30%]">
-    <ul class="flex justify-between gap-6">
-      <li>
-        <a href="/" class="hover:text-amber-700 transition-colors">Home</a>
-      </li>
-      <li>
-        <a href="/#courses" class="hover:text-amber-700 transition-colors"
-          >Explora</a
+<header
+  class="sticky top-0 z-40 bg-[#FAFFFE]/90 backdrop-blur border-b border-slate-200/60"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <!-- Logo responsive -->
+      <a
+        href="/"
+        class="flex items-center shrink-0"
+        aria-label="The Sun Learning — Inicio"
+      >
+        <Image
+          src={Logo}
+          alt="The Sun Learning"
+          class="h-8 sm:h-9 md:h-11 lg:h-12 w-auto"
+        />
+      </a>
+
+      <!-- Nav desktop (lg y superior) -->
+      <nav class="hidden lg:flex items-center gap-8 text-amber-950">
+        <a
+          href="/"
+          class="hover:text-amber-700 transition-colors text-sm font-medium"
         >
-      </li>
-      <li>
-        <!-- <a href="#" class="hover:text-amber-700 transition-colors">Roadmap</a> -->
-      </li>
-    </ul>
-  </nav>
+          Home
+        </a>
+        <a
+          href="/#courses"
+          class="hover:text-amber-700 transition-colors text-sm font-medium"
+        >
+          Explora
+        </a>
+      </nav>
+
+      <!-- Botón hamburguesa (menos de lg) -->
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
+      >
+        <svg
+          id="menu-open-icon"
+          class="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg
+          id="menu-close-icon"
+          class="hidden w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Panel del menú móvil -->
+    <nav
+      id="mobile-menu"
+      class="hidden lg:hidden pb-4 border-t border-slate-200/60"
+    >
+      <ul class="flex flex-col gap-1 pt-3">
+        <li>
+          <a
+            href="/"
+            class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-amber-700 transition-colors text-sm font-medium"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="/#courses"
+            class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-amber-700 transition-colors text-sm font-medium"
+          >
+            Explora
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const openIcon = document.getElementById("menu-open-icon");
+  const closeIcon = document.getElementById("menu-close-icon");
+
+  if (toggle && menu && openIcon && closeIcon) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      menu.classList.toggle("hidden", !open);
+      openIcon.classList.toggle("hidden", open);
+      closeIcon.classList.toggle("hidden", !open);
+    };
+
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+      setOpen(!isOpen);
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+  }
+</script>
