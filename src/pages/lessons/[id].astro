@@ -1,6 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/LandingPageLayout.astro";
+import Header from "../../components/Header.astro";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons");
@@ -50,6 +51,7 @@ const levelStyles: Record<string, string> = {
 ---
 
 <Layout title={title} description={description}>
+  <Header />
   <main class="max-w-3xl mx-auto px-4 py-10">
     <a href="/" class="text-sm text-amber-600 hover:text-amber-700 font-medium">
       ← Volver al inicio

@@ -2,10 +2,13 @@
 import LandingPageLayout from "../layouts/LandingPageLayout.astro";
 import Header from "../components/Header.astro";
 import Main from "../components/Main.astro";
+import Logo from "../components/Logo.astro";
 ---
 
 <LandingPageLayout>
-  <Header />
+  <Header>
+    <Logo />
+  </Header>
   <Main />
   <script>
     import "../scripts/search.client.ts";
