@@ -1,10 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 const total = (await getCollection("lessons")).length;
+
+const heroBackGroundColor = `bg-[#e5e3db]`;
 ---
 
 <section
-  class="hero pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-28"
+  class=`hero pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-28`
   aria-labelledby="hero-title"
 >
   <div
