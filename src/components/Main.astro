@@ -6,20 +6,23 @@ import SearchBar from "../components/SearchBar.astro";
 import LessonGrid from "../components/LessonGrid.astro";
 ---
 
-<main>
+<main class="pb-24">
   <Hero />
-  <CoursesSection />
 
-  <section class="mt-16">
-    <h2 class="text-2xl font-bold mb-6">Explorar por categoría</h2>
-    <TOC />
-  </section>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <CoursesSection />
 
-  <section class="mt-16">
-    <h2 class="text-2xl font-bold mb-6">Buscar lecciones</h2>
-    <SearchBar />
-    <div class="mt-6">
-      <LessonGrid />
-    </div>
-  </section>
+    <section class="mt-20">
+      <h2 class="text-2xl font-bold mb-6">Explorar por categoría</h2>
+      <TOC />
+    </section>
+
+    <section class="mt-20">
+      <h2 class="text-2xl font-bold mb-6">Buscar lecciones</h2>
+      <SearchBar />
+      <div class="mt-6">
+        <LessonGrid />
+      </div>
+    </section>
+  </div>
 </main>
