@@ -1,8 +1,7 @@
 ---
-// src/pages/courses/[course].astro
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/LandingPageLayout.astro";
-
+import Header from "../../components/Header.astro";
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons");
   const courses = [...new Set(lessons.map((l) => l.data.course))];
@@ -58,6 +57,7 @@ const categories = [...new Set(lessons.map((l) => l.data.category))];
   title={`${course} - Curso`}
   description={`Curso de ${course} en The Sun Learning`}
 >
+  <Header />
   <main class="max-w-3xl mx-auto px-4 py-10">
     <a href="/" class="text-sm text-amber-600 hover:text-amber-700 font-medium">
       ← Volver al inicio
