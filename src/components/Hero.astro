@@ -3,15 +3,23 @@ import { getCollection } from "astro:content";
 const total = (await getCollection("lessons")).length;
 ---
 
-<section class="hero my-[10vw]" aria-labelledby="hero-title">
-  <div class="flex flex-col items-center text-center w-full">
-    <h1 aria-labelledby="hero-title">Aprende<br />Inglés</h1>
-    <h2 class="mb-3"><span>GRATIS!</span></h2>
-    <!-- Luego voy a cambiar por "Aprende Idiomas o referencia a contenido general" -->
+<section
+  class="hero pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-28"
+  aria-labelledby="hero-title"
+>
+  <div
+    class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center"
+  >
+    <h1 id="hero-title">Aprende<br />Inglés</h1>
+    <h2 class="mb-4"><span>GRATIS!</span></h2>
     <p class="description">Con un total de {total} lecciones</p>
     <p class="description">El límite lo pones tú.</p>
-    <button>
-      <a class="" href="#courses">Explora el contenido<span>→</span></a>
-    </button>
+    <a
+      href="#courses"
+      class="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-500 text-slate-900 font-semibold shadow-sm hover:shadow-md transition-all"
+    >
+      Explora el contenido
+      <span aria-hidden="true">&rarr;</span>
+    </a>
   </div>
 </section>
