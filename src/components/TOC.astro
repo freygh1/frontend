@@ -21,7 +21,8 @@ for (const categories of grouped.values()) {
 }
 ---
 
-<section id="toc" class="space-y-8">
+<section id="toc" class="space-y-8 mt-20">
+  <h2 class="text-2xl font-bold mb-6">Explorar por categoría</h2>
   {
     [...grouped.entries()].map(([course, categories]) => {
       const total = [...categories.values()].reduce(
